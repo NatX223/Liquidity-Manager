@@ -8,9 +8,9 @@ import {
 } from "matchstick-as/assembly/index"
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { Approval } from "../generated/schema"
-import { Approval as ApprovalEvent } from "../generated/USDC_USDT Pair Contract/USDC_USDT Pair Contract"
-import { handleApproval } from "../src/usdc-usdt-pair-contract"
-import { createApprovalEvent } from "./usdc-usdt-pair-contract-utils"
+import { Approval as ApprovalEvent } from "../generated/UniswapV2Pair_USDT_USDC/UniswapV2Pair_USDT_USDC"
+import { handleApproval } from "../src/uniswap-v-2-pair-usdt-usdc"
+import { createApprovalEvent } from "./uniswap-v-2-pair-usdt-usdc-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0

@@ -5,7 +5,7 @@ import {
   Swap as SwapEvent,
   Sync as SyncEvent,
   Transfer as TransferEvent
-} from "../generated/USDC_USDT Pair Contract/USDC_USDT Pair Contract"
+} from "../generated/UniswapV2Pair_USDT_USDC/UniswapV2Pair_USDT_USDC"
 import { Approval, Burn, Mint, Swap, Sync, Transfer } from "../generated/schema"
 
 export function handleApproval(event: ApprovalEvent): void {

@@ -7,7 +7,7 @@ import {
   Swap,
   Sync,
   Transfer
-} from "../generated/USDC_USDT Pair Contract/USDC_USDT Pair Contract"
+} from "../generated/UniswapV2Pair_USDT_USDC/UniswapV2Pair_USDT_USDC"
 
 export function createApprovalEvent(
   owner: Address,
