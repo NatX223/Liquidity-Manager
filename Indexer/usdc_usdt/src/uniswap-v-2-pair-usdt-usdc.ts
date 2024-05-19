@@ -1,102 +1,78 @@
-import {
-  Approval as ApprovalEvent,
-  Burn as BurnEvent,
-  Mint as MintEvent,
-  Swap as SwapEvent,
-  Sync as SyncEvent,
-  Transfer as TransferEvent
-} from "../generated/UniswapV2Pair_USDT_USDC/UniswapV2Pair_USDT_USDC"
-import { Approval, Burn, Mint, Swap, Sync, Transfer } from "../generated/schema"
+import { BigInt, BigDecimal } from "@graphprotocol/graph-ts"
+import { Sync, Swap, Mint, Burn, Approval, Transfer } from "../generated/UniswapV2Pair_USDT_USDC/UniswapV2Pair_USDT_USDC"
+import { Volume, Reserve, LiquidityProvider } from "../generated/schema"
 
-export function handleApproval(event: ApprovalEvent): void {
-  let entity = new Approval(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.owner = event.params.owner
-  entity.spender = event.params.spender
-  entity.value = event.params.value
+const INTERVAL = BigInt.fromI32(21600) // 6 hours in seconds
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+function getIntervalId(timestamp: BigInt): string {
+  return timestamp.div(INTERVAL).toString()
 }
 
-export function handleBurn(event: BurnEvent): void {
-  let entity = new Burn(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.sender = event.params.sender
-  entity.amount0 = event.params.amount0
-  entity.amount1 = event.params.amount1
-  entity.to = event.params.to
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+function getOrCreateVolume(timestamp: BigInt): Volume {
+  let intervalId = getIntervalId(timestamp)
+  let volume = Volume.load(intervalId)
+  if (volume == null) {
+    volume = new Volume(intervalId)
+    volume.timestamp = timestamp
+    volume.volumeToken0 = BigDecimal.fromString("0")
+    volume.volumeToken1 = BigDecimal.fromString("0")
+  }
+  return volume as Volume
 }
 
-export function handleMint(event: MintEvent): void {
-  let entity = new Mint(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.sender = event.params.sender
-  entity.amount0 = event.params.amount0
-  entity.amount1 = event.params.amount1
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+function getOrCreateReserve(timestamp: BigInt): Reserve {
+  let intervalId = getIntervalId(timestamp)
+  let reserve = Reserve.load(intervalId)
+  if (reserve == null) {
+    reserve = new Reserve(intervalId)
+    reserve.timestamp = timestamp
+    reserve.reserve0 = BigDecimal.fromString("0")
+    reserve.reserve1 = BigDecimal.fromString("0")
+  }
+  return reserve as Reserve
 }
 
-export function handleSwap(event: SwapEvent): void {
-  let entity = new Swap(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.sender = event.params.sender
-  entity.amount0In = event.params.amount0In
-  entity.amount1In = event.params.amount1In
-  entity.amount0Out = event.params.amount0Out
-  entity.amount1Out = event.params.amount1Out
-  entity.to = event.params.to
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+function getOrCreateLiquidityProvider(timestamp: BigInt): LiquidityProvider {
+  let intervalId = getIntervalId(timestamp)
+  let provider = LiquidityProvider.load(intervalId)
+  if (provider == null) {
+    provider = new LiquidityProvider(intervalId)
+    provider.count = BigInt.fromI32(0)
+    provider.timestamp = timestamp
+  }
+  return provider as LiquidityProvider
 }
 
-export function handleSync(event: SyncEvent): void {
-  let entity = new Sync(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.reserve0 = event.params.reserve0
-  entity.reserve1 = event.params.reserve1
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+export function handleSync(event: Sync): void {
+  let reserve = getOrCreateReserve(event.block.timestamp)
+  reserve.reserve0 = event.params.reserve0.toBigDecimal()
+  reserve.reserve1 = event.params.reserve1.toBigDecimal()
+  reserve.save()
 }
 
-export function handleTransfer(event: TransferEvent): void {
-  let entity = new Transfer(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.from = event.params.from
-  entity.to = event.params.to
-  entity.value = event.params.value
+export function handleSwap(event: Swap): void {
+  let volume = getOrCreateVolume(event.block.timestamp)
+  volume.volumeToken0 = volume.volumeToken0.plus(event.params.amount0In.minus(event.params.amount0Out).toBigDecimal())
+  volume.volumeToken1 = volume.volumeToken1.plus(event.params.amount1In.minus(event.params.amount1Out).toBigDecimal())
+  volume.save()
+}
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+export function handleMint(event: Mint): void {
+  let provider = getOrCreateLiquidityProvider(event.block.timestamp)
+  provider.count = provider.count.plus(BigInt.fromI32(1))
+  provider.save()
+}
 
-  entity.save()
+export function handleBurn(event: Burn): void {
+  let provider = getOrCreateLiquidityProvider(event.block.timestamp)
+  provider.count = provider.count.minus(BigInt.fromI32(1))
+  provider.save()
+}
+
+export function handleApproval(event: Approval): void {
+  // handle approval event if needed
+}
+
+export function handleTransfer(event: Transfer): void {
+  // handle transfer event if needed
 }

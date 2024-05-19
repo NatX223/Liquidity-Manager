@@ -1,8 +1,8 @@
 type Approval @entity(immutable: true) {
   id: Bytes!
-  owner: Bytes!
-  spender: Bytes!
-  value: BigInt!
+  owner: Bytes! # address
+  spender: Bytes! # address
+  value: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -10,10 +10,10 @@ type Approval @entity(immutable: true) {
 
 type Burn @entity(immutable: true) {
   id: Bytes!
-  sender: Bytes!
-  amount0: BigInt!
-  amount1: BigInt!
-  to: Bytes!
+  sender: Bytes! # address
+  amount0: BigInt! # uint256
+  amount1: BigInt! # uint256
+  to: Bytes! # address
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -21,9 +21,9 @@ type Burn @entity(immutable: true) {
 
 type Mint @entity(immutable: true) {
   id: Bytes!
-  sender: Bytes!
-  amount0: BigInt!
-  amount1: BigInt!
+  sender: Bytes! # address
+  amount0: BigInt! # uint256
+  amount1: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -31,12 +31,12 @@ type Mint @entity(immutable: true) {
 
 type Swap @entity(immutable: true) {
   id: Bytes!
-  sender: Bytes!
-  amount0In: BigInt!
-  amount1In: BigInt!
-  amount0Out: BigInt!
-  amount1Out: BigInt!
-  to: Bytes!
+  sender: Bytes! # address
+  amount0In: BigInt! # uint256
+  amount1In: BigInt! # uint256
+  amount0Out: BigInt! # uint256
+  amount1Out: BigInt! # uint256
+  to: Bytes! # address
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -44,8 +44,8 @@ type Swap @entity(immutable: true) {
 
 type Sync @entity(immutable: true) {
   id: Bytes!
-  reserve0: BigInt!
-  reserve1: BigInt!
+  reserve0: BigInt! # uint112
+  reserve1: BigInt! # uint112
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -53,30 +53,10 @@ type Sync @entity(immutable: true) {
 
 type Transfer @entity(immutable: true) {
   id: Bytes!
-  from: Bytes!
-  to: Bytes!
-  value: BigInt!
+  from: Bytes! # address
+  to: Bytes! # address
+  value: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
-}
-
-type Volume @entity {
-  id: ID!
-  timestamp: BigInt!
-  volumeToken0: BigDecimal!
-  volumeToken1: BigDecimal!
-}
-
-type Reserve @entity {
-  id: ID!
-  timestamp: BigInt!
-  reserve0: BigDecimal!
-  reserve1: BigDecimal!
-}
-
-type LiquidityProvider @entity {
-  id: ID!
-  count: BigInt!
-  timestamp: BigInt!
 }

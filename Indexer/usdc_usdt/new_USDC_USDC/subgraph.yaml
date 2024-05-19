@@ -22,9 +22,6 @@ dataSources:
         - Swap
         - Sync
         - Transfer
-        - Volume
-        - Reserve
-        - LiquidityProvider
       abis:
         - name: UniswapV2Pair_USDT_USDC
           file: ./abis/UniswapV2Pair_USDT_USDC.json
