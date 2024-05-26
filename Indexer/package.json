@@ -8,5 +8,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "csv-writer": "^1.6.0",
+    "luxon": "^3.4.4",
+    "node-fetch": "^3.3.2"
+  }
 }

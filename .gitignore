@@ -1,1 +1,7 @@
 gizaenv
+Indexer/Data/abis
+Indexer/Data/build
+Indexer/Data/generated
+Indexer/Data/new_USDC_USDC
+Indexer/Data/src
+Indexer/Data/tests

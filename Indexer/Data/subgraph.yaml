@@ -42,3 +42,41 @@ dataSources:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
       file: ./src/uniswap-v-2-pair-usdt-usdc.ts
+  - kind: ethereum
+    name: Contract
+    network: mainnet
+    source:
+      address: "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc"
+      abi: UniswapV2Pair_USDT_USDC
+      startBlock: 10008355
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - Burn
+        - Mint
+        - Swap
+        - Sync
+        - Transfer
+        - Volume
+        - Reserve
+        - LiquidityProvider
+      abis:
+        - name: UniswapV2Pair_USDT_USDC
+          file: ./abis/UniswapV2Pair_USDT_USDC.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: Burn(indexed address,uint256,uint256,indexed address)
+          handler: handleBurn
+        - event: Mint(indexed address,uint256,uint256)
+          handler: handleMint
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap
+        - event: Sync(uint112,uint112)
+          handler: handleSync
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/uniswap-v-2-pair-usdt-usdc.ts

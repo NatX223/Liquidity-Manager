@@ -3,6 +3,9 @@
     "UniswapV2Pair_USDT_USDC": {
       "address": "0x3041CbD36888bECc7bbCBc0045E3B1f144466f5f",
       "startBlock": 10092378
+    },
+    "Contract": {
+      "address": "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc"
     }
   }
 }
