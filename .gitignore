@@ -5,3 +5,6 @@ Indexer/Data/generated
 Indexer/Data/new_USDC_USDC
 Indexer/Data/src
 Indexer/Data/tests
+smart_contract/contracts/Lock.sol
+smart_contract/test/Lock.js
+smart_contract/ignition/modules/Lock.js
