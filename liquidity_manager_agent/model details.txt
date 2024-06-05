@@ -1,0 +1,4 @@
+Model id - 705
+version id - 1
+endpoint id - 275
+endpoint url - https://endpoint-natx-705-1-ba519d61-7i3yxzspbq-ew.a.run.app

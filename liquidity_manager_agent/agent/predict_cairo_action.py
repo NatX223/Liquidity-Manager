@@ -5,7 +5,7 @@ from giza_actions.action import Action, action
 from giza_actions.model import GizaModel
 from giza_actions.task import task
 
-from liquidity_manager.predict_onnx_action import preprocess_image
+from agent.predict_onnx_action import preprocess_image
 
 MODEL_ID = ...  # Update with your model ID
 VERSION_ID = ...  # Update with your version ID

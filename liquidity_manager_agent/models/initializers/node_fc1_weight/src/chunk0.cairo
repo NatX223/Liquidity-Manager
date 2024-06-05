@@ -1,0 +1,40 @@
+use orion::numbers::{FixedTrait, FP16x16};
+
+fn compute(ref a: Array<FP16x16>) {
+a.append(FP16x16 { mag: 38051, sign: true });
+a.append(FP16x16 { mag: 7282, sign: true });
+a.append(FP16x16 { mag: 45704, sign: true });
+a.append(FP16x16 { mag: 16138, sign: false });
+a.append(FP16x16 { mag: 9656, sign: false });
+a.append(FP16x16 { mag: 26378, sign: true });
+a.append(FP16x16 { mag: 6918, sign: true });
+a.append(FP16x16 { mag: 4590, sign: false });
+a.append(FP16x16 { mag: 16403, sign: false });
+a.append(FP16x16 { mag: 14657, sign: false });
+a.append(FP16x16 { mag: 51935, sign: true });
+a.append(FP16x16 { mag: 11286, sign: true });
+a.append(FP16x16 { mag: 1309, sign: false });
+a.append(FP16x16 { mag: 9002, sign: false });
+a.append(FP16x16 { mag: 21127, sign: true });
+a.append(FP16x16 { mag: 827, sign: true });
+a.append(FP16x16 { mag: 12704, sign: true });
+a.append(FP16x16 { mag: 8320, sign: false });
+a.append(FP16x16 { mag: 10910, sign: true });
+a.append(FP16x16 { mag: 484, sign: false });
+a.append(FP16x16 { mag: 1321, sign: false });
+a.append(FP16x16 { mag: 3850, sign: true });
+a.append(FP16x16 { mag: 4943, sign: false });
+a.append(FP16x16 { mag: 126659, sign: true });
+a.append(FP16x16 { mag: 9611, sign: true });
+a.append(FP16x16 { mag: 16785, sign: true });
+a.append(FP16x16 { mag: 15556, sign: true });
+a.append(FP16x16 { mag: 16037, sign: true });
+a.append(FP16x16 { mag: 14668, sign: true });
+a.append(FP16x16 { mag: 18223, sign: false });
+a.append(FP16x16 { mag: 13420, sign: true });
+a.append(FP16x16 { mag: 10883, sign: false });
+a.append(FP16x16 { mag: 43, sign: true });
+a.append(FP16x16 { mag: 17750, sign: true });
+a.append(FP16x16 { mag: 50702, sign: true });
+a.append(FP16x16 { mag: 41265, sign: false });
+}
