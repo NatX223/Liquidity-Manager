@@ -6,7 +6,6 @@ live link -
 
 -   [Problem Statement](#Problem-statement)
 -   [Solution](#Solution)
--   [How it works](#How-it-works)
 -   [Model Building](#Model-Building)
     -   [Training Data Collection](#Training-Data-Collection)
     -   [Data Analysis](#Data-Analysis)
@@ -18,11 +17,7 @@ live link -
     -   [Transpiling The Model](#Transpiling-The-Model)
     -   [Endpoint Deployment](#Endpoint-Deployment)
     -   [Agent Creation](#Agent-Creation)
--   [Technologies Used](#technologies-used)
-    -   [Smart Contract](#Solidity-smart-contracts)
-    -   [LightLink Testnet](#LightLink-Testnet)
-    -   [API3](#API3)
-    -   [Backend](#backend)
+-   [Agent Architecture](#Agent-Architecture)
 -   [Agent Business Case](#Agent-Business-Case)
 -   [Agent Functionality](#Agent-Functionality)
 -   [Possible Improvements](#Possible-Improvements)
@@ -31,26 +26,11 @@ live link -
 
 > ## Problem-statement
 
-Problem Statement: Organizers of web3 giveaways(Individuals and Protocols) lack a user-friendly and transparent platform for 
-efficiently managing and equitably distributing giveaway amounts. Additionally, users face challenges in discovering legitimate 
-giveaways and airdrops. The need is for a solution that streamlines giveaway organization, enhances transparency, and provides a 
-reliable platform for users to find credible opportunities.
+Problem Statement: Liquidity providers in decentralized finance struggle to identify high-yield pools due to market volatility, data complexity, and the risk of low activity pools generating minimal returns. Additionally, rapid market changes require real-time decision-making and adaptability to optimize yields effectively. Advanced analytical tools and dynamic yield optimization strategies are needed to address these challenges.
 
 > ## Solution
 
-Solution: Introducing a platform that empowers both protocols and individuals to effortlessly organize giveaways and initiate 
-airdrops. Through this solution, rewards are distributed randomly among participants, ensuring a fair and engaging experience for all 
-involved.
-
-> ## How-it-works
-
-For Organizers: Organizers can effortlessly initiate giveaways and airdrops through a user-friendly form, detailing the designated 
-amount for each event. Upon completion, organizers will be prompted to sign a transaction, securely locking the specified amount of 
-ETH or airdropped tokens in a smart contract dedicated to tracking each giveaway or airdrop.
-
-For Users: Users can visit the app's Explore page, featuring a comprehensive list of available giveaways and airdrops. If not claimed 
-previously, users can click the "Claim" button. Upon doing so, they will be prompted to sign a transaction, enabling a randomized 
-allocation of their share in the giveaway or airdrop.
+Solution: An AI agent utilizes real-time data analysis and reinforcement learning to identify and invest in liquidity pools with the highest yield potential. By continuously monitoring market conditions and learning from past performance, the agent optimizes liquidity allocation, ensuring maximum returns for users. This dynamic approach mitigates the risk of inactive pools and enhances overall yield efficiency.
 
 > ## Model Building
 
@@ -150,7 +130,7 @@ allocation of their share in the giveaway or airdrop.
 
     Using seaborns pairplot function we can see the correlation between pairs of different column combinations.
 
-    ![alt text](<Screenshot (1018).png>)
+    ![alt text](image-6.png)
 
     We also use a heat map to get a more detailed look between
     the correlation of columns
@@ -259,6 +239,32 @@ allocation of their share in the giveaway or airdrop.
 
     The agent has the following details
     agent id - 77
+
+    To get inferences using the agent we need to write a script for that.
+    But before that we need to call some functions in order to fetch the data that will be used as inputs and prepare(scale) the data as well.
+    a local endpoint was created to call a subgraph and it returns the needed data for a specific pool, the code to that function can be found [here](https://github.com/NatX223/Liquidity-Manager/blob/main/backend/index.js)
+
+    The next step was to scale the data inorder for it to be accepted by the model
+    
+    We next got the result of the prediction and just as we did with the input data we also had to rescale the output(inference of the model)
+
+    The best pool to provide liquidity to is choosen by comparing the values of the inferences of various pools.
+
+    If the current pool that liquidity is placed in is still the best suited pool based on the inferences of the model, then no action is taken but if it is another pool, the liquidity in the current pool is removed and the tokens converted to that of the best pool and a liquidity position is open for the best suited pool.
+
+    The code for the above description can be found [here](https://github.com/NatX223/Liquidity-Manager/blob/main/liquidity_manager_agent/agent/action_agent.py)
+
+    In order to run the above code locally, you need to clone the repo and install the needed packages
+    to run the backend, cd into backend folder and run the following command
+    ```bash
+    npm run start
+    ```
+
+> ## Agent Architecture
+    
+The agent has been explained in the section above, The architecture of the agent and it's design is given below:
+
+![alt text](Agent_Design.drawio.png.png)
 
 > ## Agent Business Case
 

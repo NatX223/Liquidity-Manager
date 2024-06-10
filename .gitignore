@@ -12,10 +12,9 @@ liquidity_manager_agent/agent/.env
 frontend
 .venv
 liquidity_manager_agent/agent/agent_script.py
-backend
-liquidity_manager_agent/agent/action_agent.py
-liquidity_manager_agent/agent/addresses.py
-liquidity_manager_agent/agent/get_best_pool.py
-liquidity_manager_agent/agent/get_tokens.py
-liquidity_manager_agent/agent/lp_tools.py
-liquidity_manager_agent/agent/uni_helpers.py
+backend/node_modules
+# liquidity_manager_agent/agent/action_agent.py
+# liquidity_manager_agent/agent/addresses.py
+# liquidity_manager_agent/agent/get_tokens.py
+# liquidity_manager_agent/agent/lp_tools.py
+# liquidity_manager_agent/agent/uni_helpers.py
