@@ -17,6 +17,7 @@ live link -
     -   [Setup](#Setup)
     -   [Transpiling The Model](#Transpiling-The-Model)
     -   [Endpoint Deployment](#Endpoint-Deployment)
+    -   [Agent Creation](#Agent-Creation)
 -   [Technologies Used](#technologies-used)
     -   [Smart Contract](#Solidity-smart-contracts)
     -   [LightLink Testnet](#LightLink-Testnet)
@@ -65,6 +66,7 @@ allocation of their share in the giveaway or airdrop.
     7. feesUSD(24hr)
 
     To get the data we had to query the Uniswap V3 subgraph for poolDayData, the code below shows a function to run a sample query:
+    ```javascript
     // Fetch the pool day data for a specific pool and date
     const fetchPoolDayData = async (poolId, date) => {
     const query = `
@@ -84,8 +86,10 @@ allocation of their share in the giveaway or airdrop.
     console.log(response.data);
     return response.data.data.poolDayDatas[0];
     };
+    ```
 
     The queried data still had to go through some processing to get the values we need to do that we wrote this function:
+    ```javascript
     // Process the pool day data to calculate daily changes
     const processPoolData = (poolData) => {
     const processedData = [];
@@ -107,6 +111,7 @@ allocation of their share in the giveaway or airdrop.
 
     return processedData;
     };
+    ```
 
     We then queried 100 days of the top 10 pools on uniswap based on trading volume and wrote them all to a csv file which can be found [here](https://github.com/NatX223/Liquidity-Manager/blob/main/Indexer/Data/queries/PoolData.csv).
     The complete code to the data collection script can be found [here](https://github.com/NatX223/Liquidity-Manager/blob/main/Indexer/Data/queries/UniswapV3query.mjs)
@@ -129,15 +134,15 @@ allocation of their share in the giveaway or airdrop.
     <class 'pandas.core.frame.DataFrame'>
     RangeIndex: 990 entries, 0 to 989
     Data columns (total 7 columns):
-    #   Column              Non-Null Count  Dtype  
-    ---  ------              --------------  -----  
-    0   date                990 non-null    int64  
-    1   volumeUSDChange     990 non-null    float64
-    2   volumeToken0Change  990 non-null    float64
-    3   volumeToken1Change  990 non-null    float64
-    4   tvlUSDChange        990 non-null    float64
-    5   txCount             990 non-null    int64  
-    6   feesUSD             990 non-null    float64
+    | Column              | Non-Null Count | Dtype   |
+    |---------------------|----------------|---------|
+    | date                | 990            | int64   |
+    | volumeUSDChange     | 990            | float64 |
+    | volumeToken0Change  | 990            | float64 |
+    | volumeToken1Change  | 990            | float64 |
+    | tvlUSDChange        | 990            | float64 |
+    | txCount             | 990            | int64   |
+    | feesUSD             | 990            | float64 |
     dtypes: float64(5), int64(2)
     memory usage: 54.3 KB
 
@@ -170,7 +175,7 @@ allocation of their share in the giveaway or airdrop.
     ⦁	the output has 2 units to represent the two columns the model would be predicting in the next row of data
 
 -   ### **Model Testing**
-    After training the model on the training data we test its performance on the validation data ( data it has not been trained on ).
+    After training the model on the training data we test its performance on the validation data ( data it has not been trained on).
     The model got a loss of 0.0012 ( MEAN SQUARED ERROR ) 
     We also visualize how well the model predicts the data using a graph
 
@@ -207,6 +212,53 @@ allocation of their share in the giveaway or airdrop.
     ```bash
     giza users create-api-key
     ```
+
+-   ### **Transpiling The Model**
+
+    Since the model had already been built and trained, what we did next was to convert it to an ONNX model so that it will be accepted by Giza when transpiling, this was done with the following command:
+    ```bash
+    giza transpile models/linear_pool_model.onnx --output-path models
+    ```
+    A snapshot of the command and the output is given below:
+
+    ![alt text](image-3.png)
+
+    The model has the following details
+    model id - 705
+    version id - 1
+
+-   ### **Endpoint Deployment**
+
+    We next deployed the model and got back an endpoint that will be later used in the backend for getting inferences.
+    This was accomplished using the following command:
+    ```bash
+    giza endpoints deploy --model-id 705 --version-id 1
+    ```
+    A snapshot of the command and the output is given below:
+
+    ![alt text](image-4.png)
+
+    The endpoint has the following details
+    endpoint id - 275
+
+-   ### **Agent Creation**
+
+    In order to use the Giza agent an Ape account is needed and we created one using the following command
+    ```bash
+    ape accounts generate <account name>
+    ```
+    and provided the necessary details
+
+    The next thing we did was to create the agent using the command:
+    ```bash
+    giza agents create --model-id <model_id> --version-id <version_id> --name <agent_name> --description <agent_description>
+    ```
+    A snapshot of the command and the output is given below:
+
+    ![alt text](image-5.png)
+
+    The agent has the following details
+    agent id - 77
 
 > ## Agent Business Case
 
